@@ -2,9 +2,13 @@
 import FooterLink from '@/components/forms/FooterLink';
 import InputField from '@/components/forms/InputField';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { signInWithEmail } from '@/lib/actions/auth.actions';
 import { useForm } from 'react-hook-form';
 
 const SignIn = () => {
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -19,16 +23,22 @@ const SignIn = () => {
     });
     const onSubmit = async (data: SignInFormData) => {
         try {
-            console.error('Sign In Data:', data);
+            const result = await signInWithEmail(data);
+            if (result.success) 
+                {
+                    router.push('/');
+                }
         }
         catch (error: unknown) {
-            console.error('Sign In Error:', error);
+            toast.error('Sign In Error:',{
+                description: error instanceof Error ? error.message : 'An unexpected error occurred during sign-in.',
+            });
         }
     }
   return (
     <>
 
-            <h1 className='form-title'>Sign Up & Personalize</h1>
+            <h1 className='form-title'>Sign In & Personalize</h1>
             <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
 
                 <InputField
