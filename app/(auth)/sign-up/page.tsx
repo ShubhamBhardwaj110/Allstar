@@ -103,7 +103,7 @@ const SignUp = () => {
                 <Button type='submit' className=' yellow-btn mt-4' disabled={isSubmitting}>
                     {isSubmitting ? 'Signing Up...' : 'Sign Up'}
                 </Button>
-                <FooterLink text="Already have an account?" linktext="Sign In" href="/sign-in" />
+                <FooterLink text="Already have an account?" linkText="Sign In" href="/sign-in" />
 
             </form>
         </>
