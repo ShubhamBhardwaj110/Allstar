@@ -337,3 +337,13 @@ export const WATCHLIST_TABLE_HEADER = [
     'Alert',
     'Action',
 ];
+
+export const COUNTRIES = [
+  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+  { code: 'US', name: 'United States', flag: '🇺🇸' },
+  { code: 'AF', name: 'Afghanistan', flag: '🇦🇫' },
+  { code: 'AX', name: 'Åland Islands', flag: '🇦🇽' },
+  { code: 'AL', name: 'Albania', flag: '🇦🇱' },
+  { code: 'DZ', name: 'Algeria', flag: '🇩🇿' },
+  // ...rest of countries...
+];
