@@ -13,10 +13,9 @@ export const getWatchlistSymbolsByEmail = async (email: string): Promise<string[
       return [];
     }
 
-    // Find user by email in the users collection (Better Auth)
-    const user = await db.collection('users').findOne(
-      { email },
-     
+    // Find user by email in the user collection (Better Auth)
+    const user = await db.collection('user').findOne(
+      { email }
     );
 
     if (!user) {
