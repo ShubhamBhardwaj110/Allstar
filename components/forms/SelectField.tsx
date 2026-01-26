@@ -4,7 +4,7 @@ import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/compo
 
 const SelectField = ({name,label,placeholder,options,control,error,required=false}:SelectFieldProps) => {
   return (
-    <div className='space-y-2'>
+    <div className='space-y-2 max-w-xs'>
 <Label htmlFor={name} className='form-label'>
           {label}
         </Label>

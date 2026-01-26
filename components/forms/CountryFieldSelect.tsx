@@ -123,7 +123,7 @@ export const CountrySelectField = ({
                                        required = false,
                                    }: CountrySelectProps) => {
     return (
-        <div className='space-y-2'>
+        <div className='space-y-2 max-w-xs'>
             <Label htmlFor={name} className='form-label'>
                 {label}
             </Label>
