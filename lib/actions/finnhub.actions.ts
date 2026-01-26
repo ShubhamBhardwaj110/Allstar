@@ -178,3 +178,53 @@ export const searchStocks = cache(async (query?: string): Promise<StockWithWatch
     return [];
   }
 });
+
+export async function getStockQuote(symbol: string): Promise<{ price: number; change: number; changePercent: number } | null> {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      console.error('FINNHUB API key is not configured');
+      return null;
+    }
+
+    const cleanSymbol = symbol.trim().toUpperCase();
+    const url = `${FINNHUB_BASE_URL}/quote?symbol=${encodeURIComponent(cleanSymbol)}&token=${token}`;
+    const quote = await fetchJSON<any>(url, 60); // Cache for 60 seconds
+
+    if (quote && quote.c !== undefined) {
+      return {
+        price: quote.c, // Current price
+        change: quote.d ?? 0, // Change
+        changePercent: quote.dp ?? 0, // Change percent
+      };
+    }
+
+    return null;
+  } catch (err) {
+    console.error('Error fetching stock quote for', symbol, err);
+    return null;
+  }
+}
+
+export async function getCompanyLogo(symbol: string): Promise<string | null> {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      console.error('FINNHUB API key is not configured');
+      return null;
+    }
+
+    const cleanSymbol = symbol.trim().toUpperCase();
+    const url = `${FINNHUB_BASE_URL}/stock/profile2?symbol=${encodeURIComponent(cleanSymbol)}&token=${token}`;
+    const profile = await fetchJSON<any>(url, 3600); // Cache for 1 hour
+
+    if (profile && profile.logo) {
+      return profile.logo;
+    }
+
+    return null;
+  } catch (err) {
+    console.error('Error fetching company logo for', symbol, err);
+    return null;
+  }
+}

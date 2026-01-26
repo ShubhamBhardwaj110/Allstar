@@ -16,6 +16,7 @@ const NavItems = ({initialStocks}: { initialStocks: StockWithWatchlistStatus[]})
     return (
         <ul className="flex flex-col sm:flex-row p-2 gap-3 sm:gap-10 font-medium">
             {NAV_ITEMS.map(({ href, label }) => {
+                // Render Search as special SearchCommand component
                 if(href === '/search') return (
                     <li key="search-trigger">
                         <SearchCommand
@@ -26,13 +27,19 @@ const NavItems = ({initialStocks}: { initialStocks: StockWithWatchlistStatus[]})
                     </li>
                 )
 
-                return <li key={href}>
-                    <Link href={href} className={`hover:text-yellow-500 transition-colors ${
-                        isActive(href) ? 'text-gray-100' : ''
-                    }`}>
-                        {label}
-                    </Link>
-                </li>
+                // Render all other navigation items as regular links
+                return (
+                    <li key={href}>
+                        <Link 
+                            href={href} 
+                            className={`hover:text-yellow-500 transition-colors whitespace-nowrap ${
+                                isActive(href) ? 'text-gray-100' : 'text-gray-400'
+                            }`}
+                        >
+                            {label}
+                        </Link>
+                    </li>
+                )
             })}
         </ul>
     )

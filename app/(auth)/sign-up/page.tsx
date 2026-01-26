@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 const SignUp = () => {
-    const rounter = useRouter();
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -35,7 +35,7 @@ const SignUp = () => {
             const result = await signUpWithEmail(data);
             if (result.success) 
                 {
-                    rounter.push('/');
+                    router.push('/');
                 }
         }
         catch (error: unknown) {
