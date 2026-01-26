@@ -4,6 +4,8 @@ import { redirect } from 'next/navigation';
 import { connectToDatabase } from '@/database/mongoose';
 import { Watchlist } from '@/database/models/watchlist.model';
 import Link from 'next/link';
+import DeleteWatchlistButton from '@/components/DeleteWatchlistButton';
+import StockQuote from '@/components/StockQuote';
 
 export default async function WatchlistPage() {
   // Get authenticated user
@@ -85,15 +87,20 @@ export default async function WatchlistPage() {
               href={`/stocks/${item.symbol}`}
               className="p-4 bg-gray-800 border border-gray-700 rounded-lg hover:border-yellow-500 transition-colors"
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-bold text-gray-100">{item.symbol}</h3>
-                  <span className="text-xs text-gray-500">
-                    {new Date(item.addedAt).toLocaleDateString()}
-                  </span>
+                  <DeleteWatchlistButton symbol={item.symbol} />
                 </div>
+                
                 <p className="text-sm text-gray-400">{item.company}</p>
-                <div className="mt-2 pt-2 border-t border-gray-700">
+                
+                <StockQuote symbol={item.symbol} />
+                
+                <div className="flex items-center justify-between pt-2 border-t border-gray-700">
+                  <span className="text-xs text-gray-500">
+                    Added {new Date(item.addedAt).toLocaleDateString()}
+                  </span>
                   <p className="text-xs text-gray-500 hover:text-yellow-500 transition-colors">
                     View details →
                   </p>
