@@ -99,10 +99,21 @@ export const sendDailyNewsSummary = inngest.createFunction(
                         articles = await getNews();
                     }
                     
+                    // Convert MarketNewsArticle to FormattedArticle
+                    const formattedArticles: FormattedArticle[] = articles.slice(0, 6).map((article: MarketNewsArticle) => ({
+                        id: String(article.id),
+                        headline: article.headline,
+                        summary: article.summary,
+                        source: article.source,
+                        url: article.url,
+                        image: article.image,
+                        datetime: new Date(article.datetime * 1000).toISOString(),
+                    }));
+                    
                     userNewsMap[user.email] = {
                         email: user.email,
                         name: user.name,
-                        articles: articles.slice(0, 6)
+                        articles: formattedArticles
                     };
                 } catch (error) {
                     console.error(`Error fetching news for ${user.email}:`, error);
