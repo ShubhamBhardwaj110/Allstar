@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#md files
+WATCHLIST_API_IMPLEMENTATION_GUIDE.md
+WATCHLIST_IMPLEMENTATION.md
+WATCHLIST_QUICK_REFERENCE.md
