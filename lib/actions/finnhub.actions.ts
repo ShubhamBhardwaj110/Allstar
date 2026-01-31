@@ -101,8 +101,7 @@ export const searchStocks = cache(async (query?: string): Promise<StockWithWatch
   try {
     const token = process.env.FINNHUB_API_KEY;
     if (!token) {
-      // If no token, log and return empty to avoid throwing per requirements
-      console.error('Error in stock search:', new Error('FINNHUB API key is not configured'));
+      // API key not configured - return empty results
       return [];
     }
 
@@ -182,7 +181,6 @@ export async function getStockQuote(symbol: string): Promise<{ price: number; ch
   try {
     const token = process.env.FINNHUB_API_KEY;
     if (!token) {
-      console.error('FINNHUB API key is not configured');
       return null;
     }
 
@@ -209,7 +207,6 @@ export async function getCompanyLogo(symbol: string): Promise<string | null> {
   try {
     const token = process.env.FINNHUB_API_KEY;
     if (!token) {
-      console.error('FINNHUB API key is not configured');
       return null;
     }
 
