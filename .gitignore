@@ -30,8 +30,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files (NEVER commit - contains sensitive credentials)
+.env
+.env.local
+.env.*.local
+.env.production.local
 
 # vercel
 .vercel
@@ -40,7 +43,31 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-#md files
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Security documentation (internal use only - don't publish)
+SECURITY_AUDIT_REPORT.md
+SECURITY_FIXES_GUIDE.md
+SECURITY_QUICK_REFERENCE.md
+SECURITY_SUMMARY.md
+SECURITY_VISUALIZATION.md
+
+# Implementation guides (internal documentation)
 WATCHLIST_API_IMPLEMENTATION_GUIDE.md
 WATCHLIST_IMPLEMENTATION.md
 WATCHLIST_QUICK_REFERENCE.md
+
+# Test files
+test-db-connection.js
+
+# Build cache
+tsconfig.tsbuildinfo

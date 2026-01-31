@@ -5,6 +5,7 @@ import { headers } from 'next/headers';
 import { auth } from '@/lib/better-auth/auth';
 import { connectToDatabase } from '@/database/mongoose';
 import { Watchlist } from '@/database/models/watchlist.model';
+import { checkRateLimit, RATE_LIMITS } from '@/lib/utils/rate-limit';
 
 /**
  * GET /api/watchlist
@@ -23,6 +24,25 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
+      );
+    }
+
+    // Step 1.5: Check rate limit (100 requests per hour)
+    const rateLimitResult = checkRateLimit(session.user.id, RATE_LIMITS.API);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Rate limit exceeded',
+          message: `Too many requests. Please try again in ${rateLimitResult.retryAfter} seconds.`,
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimitResult.retryAfter),
+          },
+        }
       );
     }
 
@@ -81,6 +101,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
+      );
+    }
+
+    // Step 1.5: Check rate limit (100 requests per hour)
+    const rateLimitResult = checkRateLimit(session.user.id, RATE_LIMITS.API);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Rate limit exceeded',
+          message: `Too many requests. Please try again in ${rateLimitResult.retryAfter} seconds.`,
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimitResult.retryAfter),
+          },
+        }
       );
     }
 

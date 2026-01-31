@@ -79,7 +79,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
         console.log(`✅ Step 1: Found ${users?.length || 0} users`);
         
         if(!users || users.length === 0) {
-            console.log('❌ No users found');
+            console.log(' No users found');
             return {success:false, message:'No users found for daily news email'};
         }
         
@@ -146,7 +146,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
                             .join('\n\n');
                         
                         const prompt = NEWS_SUMMARY_EMAIL_PROMPT.replace('{{newsData}}', newsDataFormatted);
-                        console.log(`  🤖 Generating summary for ${email}...`);
+                        console.log(` Generating summary for ${email}...`);
                         
                         // Retry logic with exponential backoff for rate limiting
                         let retries = 0;
@@ -185,34 +185,34 @@ export const sendDailyNewsSummary = inngest.createFunction(
                     }
                 }
             } catch (error) {
-                console.error(`  ❌ Error generating summary for ${email}:`, error);
+                console.error(`Error generating summary for ${email}:`, error);
                 summaries[email] = '<p>Unable to generate summary.</p>';
             }
         }
         
         // Step 4: Send emails
         const emailResults = await step.run('send-news-emails', async () => {
-            console.log('🔄 Step 4: Sending emails...');
+            console.log(' Step 4: Sending emails...');
             const results: Record<string, boolean> = {};
             
             for (const [email, userData] of Object.entries(newsResults)) {
                 try {
-                    console.log(`  📮 Sending to ${userData.email}...`);
+                    console.log(`Sending data to user email...`);
                     await sendNewsEmailToUser({
                         email: userData.email,
                         name: userData.name,
                         newsContent: summaries[email] || '<p>Market news ready.</p>',
                         articleCount: userData.articles.length
                     });
-                    console.log(`  ✅ Email sent to ${userData.email}`);
+                    console.log(`   Email sent to user`);
                     results[email] = true;
                 } catch (error) {
-                    console.error(`  ❌ Error sending email to ${userData.email}:`, error);
+                    console.error(`   Error sending email to user:`, error);
                     results[email] = false;
                 }
             }
             
-            console.log('✅ Step 4 complete - all emails sent');
+            console.log(' Step 4 complete - all emails sent');
             return results;
         });
         
