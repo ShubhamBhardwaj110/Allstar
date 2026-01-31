@@ -24,9 +24,10 @@ export { fetchJSON };
 export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> {
   try {
     const range = getDateRange(5);
-    const token = process.env.FINNHUB_API_KEY;
+    const token = process.env.FINNHUB_KEY;
     if (!token) {
-      throw new Error('FINNHUB API key is not configured');
+      // API key not configured - return empty array
+      return [];
     }
     const cleanSymbols = (symbols || [])
       .map((s) => s?.trim().toUpperCase())
@@ -99,9 +100,10 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
 
 export const searchStocks = cache(async (query?: string): Promise<StockWithWatchlistStatus[]> => {
   try {
-    const token = process.env.FINNHUB_API_KEY;
+    const token = process.env.FINNHUB_KEY;
     if (!token) {
-      // API key not configured - return empty results
+      // If no token, log and return empty to avoid throwing per requirements
+      console.error('Error in stock search:', new Error('FINNHUB API key is not configured'));
       return [];
     }
 
@@ -179,8 +181,9 @@ export const searchStocks = cache(async (query?: string): Promise<StockWithWatch
 
 export async function getStockQuote(symbol: string): Promise<{ price: number; change: number; changePercent: number } | null> {
   try {
-    const token = process.env.FINNHUB_API_KEY;
+    const token = process.env.FINNHUB_KEY;
     if (!token) {
+      console.error('FINNHUB API key is not configured');
       return null;
     }
 
@@ -205,8 +208,9 @@ export async function getStockQuote(symbol: string): Promise<{ price: number; ch
 
 export async function getCompanyLogo(symbol: string): Promise<string | null> {
   try {
-    const token = process.env.FINNHUB_API_KEY;
+    const token = process.env.FINNHUB_KEY;
     if (!token) {
+      console.error('FINNHUB API key is not configured');
       return null;
     }
 

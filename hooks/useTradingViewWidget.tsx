@@ -5,13 +5,19 @@ const useTradingViewWidget = (scriptUrl:string, config: Record<string,unknown>, 
     useEffect(() => {
     if(!containerRef.current) return;
     if(containerRef.current.dataset.loaded) return;
-    containerRef.current.innerHTML =`<div class="tradingview-widget-container__widget" style="height: ${height}px; width: 100%;"></div>`;
-      const script = document.createElement("script");
-      script.src = scriptUrl;
-      script.async = true;
-      script.innerHTML = JSON.stringify(config);
-      containerRef.current.appendChild(script)
+    
+    // Clear previous content
+    containerRef.current.innerHTML = '';
+    
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = scriptUrl;
+    script.async = true;
+    script.innerHTML = JSON.stringify(config);
+    
+    containerRef.current.appendChild(script);
     containerRef.current.dataset.loaded = "true"; 
+    
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
