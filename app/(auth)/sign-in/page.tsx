@@ -27,10 +27,14 @@ const SignIn = () => {
             if (result.success) 
                 {
                     router.push('/');
+                } else {
+                    toast.error('Sign In Failed', {
+                        description: result.error || 'Unable to sign in. Please check your credentials and try again.',
+                    });
                 }
         }
         catch (error: unknown) {
-            toast.error('Sign In Error:',{
+            toast.error('Sign In Error:', {
                 description: error instanceof Error ? error.message : 'An unexpected error occurred during sign-in.',
             });
         }

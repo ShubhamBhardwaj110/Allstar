@@ -28,9 +28,18 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
         const response = await auth.api.signInEmail({ body: { email, password } })
 
         return { success: true, data: response }
-    } catch (e) {
+    } catch (e: any) {
         console.log('Sign in failed', e)
-        return { success: false, error: 'Sign in failed' }
+        
+        // Provide more specific error messages
+        if (e?.status === 401 || e?.message?.includes('password')) {
+            return { success: false, error: 'Invalid email or password. Please try again.' }
+        }
+        if (e?.message?.includes('not found') || e?.status === 404) {
+            return { success: false, error: 'No account found with this email. Please sign up first.' }
+        }
+        
+        return { success: false, error: 'Sign in failed. Please try again later.' }
     }
 }
 
